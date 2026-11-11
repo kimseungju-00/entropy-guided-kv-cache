@@ -3,16 +3,17 @@
 Single-pass KV cache compression for long-context LLMs. Tokens are selected by
 their window-averaged attention (SnapKV-style), and the retention ratio of each
 layer is set from the entropy profile of the heads in that layer, with one
-strength hyperparameter (epsilon). This repository holds the code, results and
-scripts of the revised manuscript "Entropy-Guided Layer-Adaptive KV Cache
-Compression: A Controlled Analysis of Token Selection and Per-Layer Allocation".
+strength hyperparameter (epsilon). This repository holds the code and scripts
+of the paper "Entropy-Guided Layer-Adaptive KV Cache Compression: A Controlled
+Analysis of Token Selection and Per-Layer Allocation"; the result files are
+archived on Zenodo (see Archive below).
 
 The design rationale is an elementary identity: for a single attention head,
 the total variation distance between the attention distributions before and
 after eviction (with renormalization) equals the discarded attention mass
 `delta`, and `delta` correlates with attention entropy.
 
-## Key results (revised manuscript)
+## Key results
 
 All comparisons use one matching rule (`src/eval/matching.py`: isotonic fit,
 linear interpolation, all points, no extrapolation) with paired bootstrap 95%
@@ -91,7 +92,7 @@ python experiments/efficiency/measure_efficiency_m1.py --model <model>
 python experiments/ablation/run_ablation.py --model <model> --n 100
 python experiments/analysis/diagnose_qwen.py --model <model> --n 15
 
-# Revision experiments (per-sample scores; one JSON per model and tag)
+# Controlled comparisons in experiments/revision (per-sample scores; one JSON per model and tag)
 CUDA_VISIBLE_DEVICES=0 python experiments/revision/run_phase1.py --model <model>   # proposed vs uniform
 #   other configurations (tags cake, ada, snap, pyr, abs, decomp, norm, press, w32) are listed in
 #   experiments/revision/launch_queue.sh and run with --configs ... --tag <tag>
@@ -103,7 +104,7 @@ python experiments/revision/analyze_layer_delta.py --boot 10000                 
 python experiments/revision/analyze_allocation_benefit.py --boot 10000         # worst-layer delta, budget at equal delta, normalization properties
 python experiments/revision/analyze_sensitivity.py                              # mean saving under other matching rules
 
-# Numbers quoted in the text of the revised manuscript, and its Tables 7-8
+# Numbers quoted in the text of the paper, and its Tables 7-8
 python figures_tables/compute_paper_numbers.py --boot 10000   # results/tables/paper_numbers.json
 python figures_tables/make_comparison_tables.py                # results/tables/table7_comparisons.*, table8_comparisons.*
 
@@ -113,7 +114,7 @@ python figures_tables/make_tables.py                            # tables/ (Table
 python figures_tables/make_budget_curve.py
 ```
 
-### Where each item of the revised manuscript comes from
+### Where each item of the paper comes from
 
 | Item | Script | Output |
 |---|---|---|
@@ -138,7 +139,7 @@ experiments/memory/               matched-accuracy KV memory
 experiments/efficiency/           latency and memory by context length
 experiments/ablation/             component analysis
 experiments/analysis/             head-entropy analysis (Qwen3)
-experiments/revision/             revision runs, CAKE re-implementation, analysis, figures
+experiments/revision/             controlled comparisons, CAKE re-implementation, analysis, figures
 src/eval/matching.py              matched-accuracy / matched-budget rule and bootstrap
 figures_tables/                   figures, tables, and the numbers quoted in the paper
 ```
@@ -149,7 +150,7 @@ figures_tables/                   figures, tables, and the numbers quoted in the
   accuracy-budget curve; all points are kept, and its memory comparison is
   inconclusive.
 - `results/revision_phase1/*.json` hold the per-sample scores and realized
-  budgets from which every table, figure and confidence interval of the revision
+  budgets from which every table, figure and confidence interval of the paper
   is computed. The bootstrap seed is fixed, so `compute_paper_numbers.py --boot 10000`
   reproduces `results/tables/paper_numbers.json` exactly.
 - Evaluation metrics and prompts are adapted from LongBench v1.
