@@ -81,7 +81,9 @@ python experiments/theory/measure_layer_entropy.py --model <model> --n 20
 python experiments/performance/run_performance.py --model <model> --n 100
 python experiments/performance/run_performance_m1.py --model <model> --n 100
 
-# Memory at matched accuracy (no GPU; reads the accuracy JSON)
+# Memory at matched accuracy as reported in the original submission (no GPU; reads the
+# accuracy JSON; results/kvpress_memory_m1). Superseded by Table 6 of the paper, which
+# make_revision_outputs.py computes from the per-sample scores in results/revision_phase1.
 python experiments/memory/measure_memory_m1_final.py
 python experiments/memory/compare_full_m1.py
 
@@ -111,6 +113,8 @@ python figures_tables/make_comparison_tables.py                # results/tables/
 # Figs. 1-2 (results/figures) and the tables carried over from the original submission
 python figures_tables/make_figures.py
 python figures_tables/make_tables.py                            # tables/ (Tables 1-5, 9-11, A4-A6)
+#   both scripts also write the memory figure and table of the original submission
+#   (fig_memory.png, memory.*), which Fig. 4 and Table 6 of the paper replace
 python figures_tables/make_budget_curve.py
 ```
 
@@ -135,7 +139,7 @@ src/methods/proposed_kvpress.py   the two presses (final = EntropyBudgetPress)
 src/eval/                         LongBench loader and official metrics
 experiments/theory/               TV=delta, delta-entropy, layer entropy
 experiments/performance/          accuracy (baselines + final method)
-experiments/memory/               matched-accuracy KV memory
+experiments/memory/               matched-accuracy KV memory of the original submission (superseded)
 experiments/efficiency/           latency and memory by context length
 experiments/ablation/             component analysis
 experiments/analysis/             head-entropy analysis (Qwen3)
