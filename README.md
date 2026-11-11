@@ -43,6 +43,14 @@ confidence intervals over per-sample scores (10,000 resamples).
   `Proposed_M1` in the result files): mean of the within-layer normalized head
   entropies (no head classification).
 
+## Archive
+
+The code together with all result files under `results/` (per-sample scores,
+realized budgets, tables and figures) is archived on Zenodo:
+https://doi.org/10.5281/zenodo.24133001. The `results/` directory is not
+tracked in this repository; download the archive to reproduce the tables and
+figures without rerunning the experiments.
+
 ## Setup
 
 ```bash
